@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:15:11 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/04 16:16:01 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:44:16 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,13 @@
 // 	printf("%s, %s\n", s1, s2);
 // }
 
-
-void	*func(void *arg)
-{
-	while (1);
-	pthread_exit(arg);
-	
-}
-
-int main(void)
+int main(int ac, char **av)
 {
 	pthread_t t1;
 
 	pthread_create(&t1, NULL, func , NULL);
 	pthread_join(t1, NULL);
+	
+	return 0;
 }
 
