@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:21:36 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/07 11:09:34 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:15:08 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+
+// Sert a faire patienter les threads entre eux car ils partagent la meme memoire. les pthread_join eux servent a dire au main de patentier que le thread s'execute.
 
 int mails = 0;
 pthread_mutex_t mutex;
