@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:19:16 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/10 13:23:33 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/10 17:29:19 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,26 @@ static int	is_space(char c)
 	if ((c >= 9 && c <= 13) || c == 32)
 		return (1);
 	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if ((unsigned char)c >= '0' && (unsigned char)c <= '9')
+		return (1);
+	return (0);
+}
+
+int	ft_numeric(char *str)
+{
+	int	i;
+	i = 0;
+	if (!str)
+		return (0);
+	while (ft_isdigit(str[i]))
+		i++;
+	if (str[i])
+		return (0);
+	return (1);
 }
 
 int	ft_atoi(const char *nptr)

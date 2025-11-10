@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/10 13:24:04 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/10 17:24:35 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ typedef struct s_table
 
 int					ft_atoi(const char *nptr);
 long long			ft_atoll(const char *nptr);
+int					ft_isdigit(int c);
+int					ft_numeric(char *str);
 
 #endif
