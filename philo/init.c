@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:13:50 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/10 18:05:40 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:49:32 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,22 @@ pthread_mutex_t *init_fork(int n)
 	if (!tab)
 		return (NULL);
 	return (tab);
+}
+
+void	mutex_fork(t_table *main, int n)
+{
+	pthread_mutex_t *forks;
+	int	i;
+	
+	i = 0;
+	forks = init_fork(n);
+	if (!forks)
+		return (NULL);
+	while (i < n)
+	{
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
+			return ;
+		i++;
+	}
+	main->forks = forks;
 }

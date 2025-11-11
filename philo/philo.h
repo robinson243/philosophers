@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/10 17:24:35 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/11 13:05:26 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	long long		last_meal;
-	int				alive;
+	struct s_table	*table;
 }					t_philo;
 
 typedef struct s_table
@@ -33,11 +33,13 @@ typedef struct s_table
 	int				len_philo;
 	long long		start_sim;
 	int				time_to_eat;
-	int				time_to_think;
 	int				time_to_sleep;
 	int				time_to_die;
+	int				someone_died;
+	t_philo			*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
+	pthread_mutex_t	death_lock;
 }					t_table;
 
 int					ft_atoi(const char *nptr);
