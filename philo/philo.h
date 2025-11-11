@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/11 13:05:26 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:35:37 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <sys/time.h>
 
 typedef struct s_philo
 {
@@ -46,5 +47,13 @@ int					ft_atoi(const char *nptr);
 long long			ft_atoll(const char *nptr);
 int					ft_isdigit(int c);
 int					ft_numeric(char *str);
+
+void	init_table(t_table *main, char **av);
+t_philo	*init_tab_philo(t_table *main, int n);
+pthread_mutex_t *init_fork(int n);
+void	init_mutex(t_table *main);
+void	init_forks_mutex(t_table *main);
+
+void	destroy_all_mutex(t_table *main);
 
 #endif

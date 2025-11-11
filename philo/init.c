@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:13:50 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/11 17:06:19 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/11 17:24:49 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_philo	*init_tab_philo(t_table *main, int n)
 		tab[i].id = i + 1;
 		tab[i].left_fork = i;
 		tab[i].right_fork = (i + 1) % n;
-		tab[i].last_meal = 0;
+		tab[i].last_meal = main->start_sim;
 		tab[i].table = main;
 		i++; 
 	}
@@ -53,19 +53,6 @@ pthread_mutex_t *init_fork(int n)
 	return (tab);
 }
 
-void	destroy_all_mutex(t_table *main)
-{
-	int	i = 0;
-	while (i < main->len_philo)
-	{
-		pthread_mutex_destroy(&main->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&main->print_lock);
-	pthread_mutex_destroy(&main->death_lock);
-	free(main->forks);
-}
-
 void	init_mutex(t_table *main)
 {
 	if (pthread_mutex_init(&main->print_lock, NULL) != 0)
@@ -76,7 +63,6 @@ void	init_mutex(t_table *main)
 		return ;
 	}
 }
-
 
 void	init_forks_mutex(t_table *main)
 {
