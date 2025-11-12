@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:19:16 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/10 17:29:19 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:34:50 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_isdigit(int c)
 int	ft_numeric(char *str)
 {
 	int	i;
+
 	i = 0;
 	if (!str)
 		return (0);
@@ -63,9 +64,9 @@ int	ft_atoi(const char *nptr)
 
 long long	ft_atoll(const char *nptr)
 {
-	int i;
-	long long res;
-	int minus;
+	int			i;
+	long long	res;
+	int			minus;
 
 	i = 0;
 	res = 0;

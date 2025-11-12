@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 13:13:50 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/11 17:24:49 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:32:12 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	init_table(t_table *main, char **av)
 t_philo	*init_tab_philo(t_table *main, int n)
 {
 	t_philo	*tab;
-	int	i;
-	
+	int		i;
+
 	i = 0;
 	tab = malloc(sizeof(t_philo) * n);
 	if (!tab)
@@ -38,14 +38,14 @@ t_philo	*init_tab_philo(t_table *main, int n)
 		tab[i].right_fork = (i + 1) % n;
 		tab[i].last_meal = main->start_sim;
 		tab[i].table = main;
-		i++; 
+		i++;
 	}
 	return (tab);
 }
 
-pthread_mutex_t *init_fork(int n)
+pthread_mutex_t	*init_fork(int n)
 {
-	pthread_mutex_t *tab;
+	pthread_mutex_t	*tab;
 
 	tab = malloc(sizeof(pthread_mutex_t) * n);
 	if (!tab)
@@ -53,32 +53,34 @@ pthread_mutex_t *init_fork(int n)
 	return (tab);
 }
 
-void	init_mutex(t_table *main)
+int	init_mutex(t_table *main)
 {
 	if (pthread_mutex_init(&main->print_lock, NULL) != 0)
-		return ;
+		return (0);
 	if (pthread_mutex_init(&main->death_lock, NULL) != 0)
 	{
 		pthread_mutex_destroy(&main->print_lock);
-		return ;
+		return (0);
 	}
+	return (1);
 }
 
-void	init_forks_mutex(t_table *main)
+int	init_forks_mutex(t_table *main)
 {
 	int	i;
 
 	main->forks = init_fork(main->len_philo);
 	if (!main->forks)
-		return ;
+		return (0);
 	i = 0;
 	while (i < main->len_philo)
 	{
 		if (pthread_mutex_init(&main->forks[i], NULL) != 0)
 		{
 			destroy_all_mutex(main);
-			return ;
+			return (0);
 		}
 		i++;
 	}
+	return (1);
 }
