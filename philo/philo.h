@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/12 12:31:58 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:28:42 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,24 @@ typedef struct s_table
 	pthread_mutex_t	death_lock;
 }					t_table;
 
-int					ft_atoi(const char *nptr);
-long long			ft_atoll(const char *nptr);
-int					ft_isdigit(int c);
-int					ft_numeric(char *str);
-
-void				init_table(t_table *main, char **av);
-t_philo				*init_tab_philo(t_table *main, int n);
+int					init_everything(t_table *table, char **av);
+void				init_table(t_table *table, char **av);
+void				destroy_all_mutex(t_table *table);
+int					init_forks_mutex(t_table *table);
+int					init_mutex(t_table *table);
 pthread_mutex_t		*init_fork(int n);
-int					init_mutex(t_table *main);
-int					init_forks_mutex(t_table *main);
-
-void				destroy_all_mutex(t_table *main);
+t_philo				*init_tab_philo(t_table *table, int n);
+void				cleanup(t_table *table);
+int					check_args(int ac, char **av);
+int					start_simulation(t_table *table);
+void				*philosopher_routine(void *arg);
+int					create_philosophers_threads(t_table *table);
+void				*monitor_routine(void *arg);
+long long			get_time(void);
+void				ft_usleep(long ms);
+void				print_status(t_philo *philo, char *status);
+int					ft_atoi(const char *str);
+long long			ft_atoll(const char *str);
+int					ft_numeric(char *str);
 
 #endif

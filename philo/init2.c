@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 17:20:42 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/12 13:27:07 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:28:31 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@ void	destroy_all_mutex(t_table *main)
 	pthread_mutex_destroy(&main->print_lock);
 	pthread_mutex_destroy(&main->death_lock);
 	free(main->forks);
-}
-
-long long	get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((long long)(tv.tv_sec) *1000 + (tv.tv_usec / 1000));
 }
 
 int	init_everything(t_table *table, char **av)
@@ -57,15 +49,6 @@ int	init_everything(t_table *table, char **av)
 	return (1);
 }
 
-void	ft_usleep(long ms)
-{
-	long long	start;
-
-	start = get_time();
-	while (get_time() - start < ms)
-		usleep(100);
-}
-
 void	print_status(t_philo *philo, char *status)
 {
 	t_table		*table;
@@ -76,74 +59,46 @@ void	print_status(t_philo *philo, char *status)
 	if (table->someone_died == 0)
 	{
 		timestamp = get_time() - table->start_sim;
-		printf("%lld %d %s\n", timestamp, philo->id, status);
+		printf("%lld philosophe[%d] %s\n", timestamp, philo->id, status);
 	}
 	pthread_mutex_unlock(&table->print_lock);
 }
 
-void	*philosopher_routine(void *arg)
-{
-	t_philo	*philo;
-	t_table	*table;
-
-	philo = (t_philo *)arg;
-	table = philo->table;
-	while (table->someone_died == 0)
-	{
-		pthread_mutex_lock(&table->forks[philo->left_fork]);
-		print_status(philo, "has taken a fork");
-		pthread_mutex_lock(&table->forks[philo->right_fork]);
-		print_status(philo, "has taken a fork");
-		philo->last_meal = get_time();
-		print_status(philo, "is eating");
-		ft_usleep(table->time_to_eat);
-		pthread_mutex_unlock(&table->forks[philo->right_fork]);
-		pthread_mutex_unlock(&table->forks[philo->left_fork]);
-		print_status(philo, "is sleeping");
-		ft_usleep(table->time_to_sleep);
-		print_status(philo, "is thinking");
-	}
-	return (NULL);
-}
-
-int	create_philosophers_threads(t_table *table)
+void	cleanup(t_table *table)
 {
 	int	i;
 
 	i = 0;
 	while (i < table->len_philo)
 	{
-		if (pthread_create(&table->philos[i].philo_id, NULL,
-				philosopher_routine, &table->philos[i]) != 0)
-			return (0);
+		pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
-	return (1);
+	pthread_mutex_destroy(&table->print_lock);
+	pthread_mutex_destroy(&table->death_lock);
+	free(table->forks);
+	free(table->philos);
 }
 
-void	*monitor_routine(void *arg)
+int	start_simulation(t_table *table)
 {
-	t_table	*table;
-	int		elapsed;
-	int		i;
+	pthread_t	monitor_thread;
+	int			i;
 
 	i = 0;
-	table = (t_table *)arg;
-	while (table->someone_died == 0)
+	if (create_philosophers_threads(table) == 0)
+		return (0);
+	if (pthread_create(&monitor_thread, NULL, monitor_routine, table) != 0)
 	{
-		i = 0;
-		while (i < table->len_philo)
-		{
-			elapsed = get_time() - table->philos[i].last_meal;
-			if (elapsed > table->time_to_die)
-			{
-				print_status(&table->philos[i], "is died");
-				table->someone_died = 1;
-				return ;
-			}
-			usleep(1000);
-			i++;
-		}
+		cleanup(table);
+		return (0);
 	}
-	return (NULL);
+	while (i < table->len_philo)
+	{
+		pthread_join(table->philos[i].philo_id, NULL);
+		i++;
+	}
+	pthread_join(monitor_thread, NULL);
+	cleanup(table);
+	return (1);
 }
