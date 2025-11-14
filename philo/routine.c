@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 16:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/14 02:31:33 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/14 02:33:47 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,14 @@ void	run_one_philo(t_philo *p)
 		ft_usleep(target - now);
 	pthread_mutex_lock(&t->print_lock);
 	if (t->someone_died == 0)
-		printf("%lld philosophe[%d] is died\n",
-			get_time() - t->start_sim, p->id);
+		printf("%lld philosophe[%d] is died\n", get_time() - t->start_sim,
+			p->id);
 	pthread_mutex_unlock(&t->print_lock);
 	pthread_mutex_unlock(&t->forks[p->left_fork]);
 	pthread_mutex_lock(&t->death_lock);
 	t->someone_died = 1;
 	pthread_mutex_unlock(&t->death_lock);
 }
-
 
 void	take_forks_ordered(t_philo *p)
 {
