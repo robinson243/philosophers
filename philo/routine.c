@@ -6,35 +6,11 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 16:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/14 16:00:51 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/14 16:36:13 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long long	get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec / 1000));
-}
-
-void ft_usleep(long ms)
-{
-    long long end = get_time() + ms;
-    while (get_time() < end)
-    {
-        long long left = end - get_time();
-        if (left > 10)
-            usleep(5000);
-        else if (left > 1)
-            usleep(100); 
-        else
-            ;
-    }
-}
-
 
 void	run_one_philo(t_philo *p)
 {
