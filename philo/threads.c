@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 16:42:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/12 17:29:33 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/14 01:59:04 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	*monitor_routine(void *arg)
 	table = (t_table *)arg;
 	while (1)
 	{
+		if (table->someone_died)
+			return (NULL);
 		i = 0;
 		while (i < table->len_philo)
 		{

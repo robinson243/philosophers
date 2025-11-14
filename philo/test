@@ -1,0 +1,526 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 13:13:50 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/12 12:32:12 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+void	init_table(t_table *main, char **av)
+{
+	main->len_philo = ft_atoi(av[1]);
+	main->time_to_die = ft_atoi(av[2]);
+	main->time_to_eat = ft_atoi(av[3]);
+	main->time_to_sleep = ft_atoi(av[4]);
+	main->start_sim = 0;
+	main->someone_died = 0;
+}
+
+t_philo	*init_tab_philo(t_table *main, int n)
+{
+	t_philo	*tab;
+	int		i;
+
+	i = 0;
+	tab = malloc(sizeof(t_philo) * n);
+	if (!tab)
+		return (NULL);
+	while (i < n)
+	{
+		tab[i].id = i + 1;
+		tab[i].left_fork = i;
+		tab[i].right_fork = (i + 1) % n;
+		tab[i].last_meal = main->start_sim;
+		tab[i].table = main;
+		i++;
+	}
+	return (tab);
+}
+
+pthread_mutex_t	*init_fork(int n)
+{
+	pthread_mutex_t	*tab;
+
+	tab = malloc(sizeof(pthread_mutex_t) * n);
+	if (!tab)
+		return (NULL);
+	return (tab);
+}
+
+int	init_mutex(t_table *main)
+{
+	if (pthread_mutex_init(&main->print_lock, NULL) != 0)
+		return (0);
+	if (pthread_mutex_init(&main->death_lock, NULL) != 0)
+	{
+		pthread_mutex_destroy(&main->print_lock);
+		return (0);
+	}
+	return (1);
+}
+
+int	init_forks_mutex(t_table *main)
+{
+	int	i;
+
+	main->forks = init_fork(main->len_philo);
+	if (!main->forks)
+		return (0);
+	i = 0;
+	while (i < main->len_philo)
+	{
+		if (pthread_mutex_init(&main->forks[i], NULL) != 0)
+		{
+			destroy_all_mutex(main);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init2.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/11 17:20:42 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/14 01:36:06 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+void	destroy_all_mutex(t_table *main)
+{
+	int	i;
+
+	i = 0;
+	while (i < main->len_philo)
+	{
+		pthread_mutex_destroy(&main->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&main->print_lock);
+	pthread_mutex_destroy(&main->death_lock);
+	free(main->forks);
+}
+
+int	init_everything(t_table *table, char **av)
+{
+	int		i;
+	t_philo	*philos;
+
+	i = 0;
+	init_table(table, av);
+	if (init_forks_mutex(table) == 0 || init_mutex(table) == 0)
+		return (0);
+	philos = init_tab_philo(table, table->len_philo);
+	if (!philos)
+		return (0);
+	table->start_sim = get_time();
+	while (i < table->len_philo)
+	{
+		philos[i].last_meal = table->start_sim;
+		i++;
+	}
+	table->philos = philos;
+	return (1);
+}
+
+void	print_status(t_philo *philo, char *status)
+{
+	t_table		*table;
+	long long	timestamp;
+
+	table = philo->table;
+	pthread_mutex_lock(&table->print_lock);
+	if (table->someone_died == 0)
+	{
+		timestamp = get_time() - table->start_sim;
+		printf("%lld philosophe[%d] %s\n", timestamp, philo->id, status);
+	}
+	pthread_mutex_unlock(&table->print_lock);
+}
+
+void	cleanup(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->len_philo)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&table->print_lock);
+	pthread_mutex_destroy(&table->death_lock);
+	free(table->forks);
+	free(table->philos);
+}
+
+int	start_simulation(t_table *table)
+{
+	pthread_t	monitor_thread;
+	int			i;
+
+	i = 0;
+	if (create_philosophers_threads(table) == 0)
+		return (0);
+	if (pthread_create(&monitor_thread, NULL, monitor_routine, table) != 0)
+	{
+		cleanup(table);
+		return (0);
+	}
+	while (i < table->len_philo)
+	{
+		pthread_join(table->philos[i].philo_id, NULL);
+		i++;
+	}
+	pthread_join(monitor_thread, NULL);
+	cleanup(table);
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 13:13:50 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/12 16:44:47 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+int	check_args(int ac, char **av)
+{
+	if (ac != 5)
+	{
+		printf("Error wrong number of arguments !\n");
+		return (0);
+	}
+	if (!ft_numeric(av[1]) || !ft_numeric(av[2]) || !ft_numeric(av[3])
+		|| !ft_numeric(av[4]))
+	{
+		printf("Some arguments are not digits\n");
+		return (0);
+	}
+	if (ft_atoi(av[1]) <= 0 || ft_atoll(av[2]) <= 0 || ft_atoll(av[3]) <= 0
+		|| ft_atoll(av[4]) <= 0)
+	{
+		printf("Some arguments are negative\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	main(int ac, char **av)
+{
+	t_table	table;
+
+	if (check_args(ac, av) == 0)
+		return (0);
+	if (!init_everything(&table, av))
+		return (1);
+	if (!start_simulation(&table))
+		return (1);
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/12 16:41:03 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/14 02:31:33 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+long long	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec / 1000));
+}
+
+void	ft_usleep(long ms)
+{
+	long long	start;
+	long long	now;
+	long long	left;
+
+	start = get_time();
+	while (1)
+	{
+		now = get_time();
+		if (now - start >= ms)
+			break ;
+		left = ms - (now - start);
+		if (left > 2)
+			usleep((left - 1) * 1000);
+		else
+			usleep(50);
+	}
+}
+
+void	run_one_philo(t_philo *p)
+{
+	t_table		*t;
+	long long	target;
+	long long	now;
+
+	t = p->table;
+	pthread_mutex_lock(&t->forks[p->left_fork]);
+	print_status(p, "has taken a fork");
+	target = t->start_sim + t->time_to_die;
+	now = get_time();
+	if (target > now)
+		ft_usleep(target - now);
+	pthread_mutex_lock(&t->print_lock);
+	if (t->someone_died == 0)
+		printf("%lld philosophe[%d] is died\n",
+			get_time() - t->start_sim, p->id);
+	pthread_mutex_unlock(&t->print_lock);
+	pthread_mutex_unlock(&t->forks[p->left_fork]);
+	pthread_mutex_lock(&t->death_lock);
+	t->someone_died = 1;
+	pthread_mutex_unlock(&t->death_lock);
+}
+
+
+void	take_forks_ordered(t_philo *p)
+{
+	t_table	*t;
+	int		a;
+	int		b;
+
+	t = p->table;
+	a = p->left_fork;
+	b = p->right_fork;
+	if (b < a)
+	{
+		a = p->right_fork;
+		b = p->left_fork;
+	}
+	pthread_mutex_lock(&t->forks[a]);
+	print_status(p, "has taken a fork");
+	pthread_mutex_lock(&t->forks[b]);
+	print_status(p, "has taken a fork");
+}
+
+void	drop_forks_ordered(t_philo *p)
+{
+	t_table	*t;
+	int		a;
+	int		b;
+
+	t = p->table;
+	a = p->left_fork;
+	b = p->right_fork;
+	if (b < a)
+	{
+		a = p->right_fork;
+		b = p->left_fork;
+	}
+	pthread_mutex_unlock(&t->forks[b]);
+	pthread_mutex_unlock(&t->forks[a]);
+}
+
+void	start_eating(t_philo *p)
+{
+	t_table	*t;
+
+	t = p->table;
+	pthread_mutex_lock(&t->death_lock);
+	p->last_meal = get_time();
+	pthread_mutex_unlock(&t->death_lock);
+	print_status(p, "is eating");
+	ft_usleep(t->time_to_eat);
+}
+
+void	*philosopher_routine(void *arg)
+{
+	t_philo	*p;
+	t_table	*t;
+
+	p = (t_philo *)arg;
+	t = p->table;
+	if (p->id % 2 == 0)
+		usleep(1000);
+	if (t->len_philo == 1)
+	{
+		run_one_philo(p);
+		return (NULL);
+	}
+	while (t->someone_died == 0)
+	{
+		take_forks_ordered(p);
+		start_eating(p);
+		drop_forks_ordered(p);
+		if (t->someone_died)
+			break ;
+		print_status(p, "is sleeping");
+		ft_usleep(t->time_to_sleep);
+		print_status(p, "is thinking");
+	}
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/12 16:42:03 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/14 01:59:04 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+int	create_philosophers_threads(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->len_philo)
+	{
+		if (pthread_create(&table->philos[i].philo_id, NULL,
+				philosopher_routine, &table->philos[i]) != 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	*monitor_routine(void *arg)
+{
+	t_table		*table;
+	long long	elapsed;
+	int			i;
+
+	table = (t_table *)arg;
+	while (1)
+	{
+		if (table->someone_died)
+			return (NULL);
+		i = 0;
+		while (i < table->len_philo)
+		{
+			pthread_mutex_lock(&table->death_lock);
+			elapsed = get_time() - table->philos[i].last_meal;
+			if (elapsed > table->time_to_die && table->someone_died == 0)
+			{
+				table->someone_died = 1;
+				pthread_mutex_unlock(&table->death_lock);
+				print_status(&table->philos[i], "is died");
+				return (NULL);
+			}
+			pthread_mutex_unlock(&table->death_lock);
+			i++;
+		}
+		usleep(1000);
+	}
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/10 13:19:16 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/12 12:34:50 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+static int	is_space(char c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	if ((unsigned char)c >= '0' && (unsigned char)c <= '9')
+		return (1);
+	return (0);
+}
+
+int	ft_numeric(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (ft_isdigit(str[i]))
+		i++;
+	if (str[i])
+		return (0);
+	return (1);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	int	i;
+	int	res;
+	int	minus;
+
+	i = 0;
+	res = 0;
+	minus = 1;
+	while (is_space(nptr[i]))
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			minus *= -1;
+		i++;
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+		res = res * 10 + (nptr[i++] - '0');
+	return (res * minus);
+}
+
+long long	ft_atoll(const char *nptr)
+{
+	int			i;
+	long long	res;
+	int			minus;
+
+	i = 0;
+	res = 0;
+	minus = 1;
+	while (is_space(nptr[i]))
+		i++;
+	if (nptr[i] == '-' || nptr[i] == '+')
+	{
+		if (nptr[i] == '-')
+			minus *= -1;
+		i++;
+	}
+	while (nptr[i] >= '0' && nptr[i] <= '9')
+		res = res * 10 + (nptr[i++] - '0');
+	return (res * minus);
+}
