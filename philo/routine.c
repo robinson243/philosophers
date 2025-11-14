@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 16:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/14 02:33:47 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/14 16:00:51 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,21 @@ long long	get_time(void)
 	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec / 1000));
 }
 
-void	ft_usleep(long ms)
+void ft_usleep(long ms)
 {
-	long long	start;
-	long long	now;
-	long long	left;
-
-	start = get_time();
-	while (1)
-	{
-		now = get_time();
-		if (now - start >= ms)
-			break ;
-		left = ms - (now - start);
-		if (left > 2)
-			usleep((left - 1) * 1000);
-		else
-			usleep(50);
-	}
+    long long end = get_time() + ms;
+    while (get_time() < end)
+    {
+        long long left = end - get_time();
+        if (left > 10)
+            usleep(5000);
+        else if (left > 1)
+            usleep(100); 
+        else
+            ;
+    }
 }
+
 
 void	run_one_philo(t_philo *p)
 {
