@@ -1,25 +1,28 @@
 #include "philo.h"
 
-int	parse_input(t_table *table, char **av)
+int	parse_args(int argc, char **argv, t_args *args)
 {
-	table->philo_number = ft_atol(av[1]);
-	table->time_to_die = ft_atol(av[2]) * 1000;
-	table->time_to_eat = ft_atol(av[3]) * 1000;
-	table->time_to_sleep = ft_atol(av[4]) * 1000;
-	table->nbr_limit_meal = -1;
-	if (table->time_to_die < 60000 || table->time_to_eat < 60000
-		|| table->time_to_sleep < 60000)
+	if (argc < 5 || argc > 6)
 	{
-		printf("Use timestamps major than 60ms\n");
-		return (-1);
+		ft_putstrfd("Usage: ./philo nb_philo time_die time_eat time_sleep [nb_meals]\n",
+			2);
+		return (1);
 	}
-	if (table->time_to_die <= 0 || table->time_to_eat <= 0 
-		|| table->time_to_sleep <= 0)
-	{
-		printf("Use positive numbers\n");
-		return (-1);
-	}
-	if (av[5])
-		table->nbr_limit_meal = ft_atol(av[5]);
+	args->philo_count = ft_atol(argv[1]);
+	args->time_to_die = ft_atol(argv[2]);
+	args->time_to_eat = ft_atol(argv[3]);
+	args->time_to_sleep = ft_atol(argv[4]);
+	if (argc == 6)
+		args->must_eat = ft_atol(argv[5]);
+	else
+		args->must_eat = -1;
+	if (args->philo_count == -1 || args->time_to_die == -1
+		|| args->time_to_eat == -1 || args->time_to_sleep == -1 || (argc == 6
+			&& args->must_eat == -1))
+		return (ft_putstrfd("Error: Invalid arguments\n", 2), 1);
+	if (args->philo_count == 0)
+		return (ft_putstrfd("Error: Need at least 1 philosopher\n", 2), 1);
+	args->finished = 0;
 	return (0);
 }
+

@@ -1,13 +1,33 @@
 #include "philo.h"
 
-int ft_ispace(char c)
+long get_time(void)
+{
+    struct timeval	tv;
+
+    gettimeofday(&tv, NULL);
+    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_putstrfd(char *str, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(fd, &str[i], 1);
+		i++;
+	}
+}
+
+static int ft_ispace(char c)
 {
     if ((c >= 9 && c <= 13) || c == 32)
         return (1);
     return (0);
 }
 
-int	valid_input(long number)
+static int	valid_input(long number)
 {
 	if (number < 0)
 		return (-1);

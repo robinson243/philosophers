@@ -6,62 +6,63 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/17 13:00:25 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/17 17:33:14 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "limits.h"
 # include <pthread.h>
-# include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
-# include <sys/time.h>
 # include <unistd.h>
+#include <stdio.h>
+# include <sys/time.h>
+# include <limits.h>
 
-typedef pthread_mutex_t	t_mtx;
-typedef struct s_table	t_table;
+typedef struct s_args {
+	int		philo_count;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		must_eat;
+	int		finished;
+	long	start_time;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	*forks;
+}	t_args;
 
-typedef struct s_fork
-{
-	t_mtx				fork;
-	int					fork_id;
+typedef struct s_philo {
+	int		id;
+	int		eat_count;
+	long	last_meal;
+	pthread_t	thread_id;
+	t_args		*args;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	int		finished;
+}	t_philo;
 
-}						t_fork;
 
-typedef struct s_philo
-{
-	int					id;
-	long				meals_counter;
-	long				full;
-	long				last_meal_time;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
-	pthread_t			thread_id;
-	t_table				*table;
-}						t_philo;
+// utils
+long	get_time(void);
+void	ft_usleep(long time);
+void	ft_putstrfd(char *str, int fd);
+long ft_atol(const char *str);
 
-typedef struct s_table
-{
-	long				philo_number;
-	long				time_to_die;
-	long				time_to_eat;
-	long				time_to_sleep;
-	long				nbr_limit_meal;
-	long				start_sim;
-	bool				end_sim;
-	t_fork				*forks;
-	t_philo				*philos;
-}						t_table;
+int	parse_args(int argc, char **argv, t_args *args);
 
-/* Utils */
+// life
+void	*philo_life(void *philo_void);
 
-int						valid_input(long number);
-int						ft_ispace(char c);
-long					ft_atol(const char *str);
+// init & clean
+int		init_simulation(int argc, char **argv, t_args *args, t_philo **philos);
+void	clean_simulation(t_args *args, t_philo *philos);
 
-int	parse_input(t_table *table, char **av);
+// error
+int		error(char *msg);
+
+void	destroy_all_mutexes(pthread_mutex_t *tab, int i);
+int	init_mutexes(t_args *args);
 
 #endif
