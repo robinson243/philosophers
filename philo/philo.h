@@ -6,13 +6,14 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/16 23:30:41 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:00:25 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include "limits.h"
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -51,6 +52,16 @@ typedef struct s_table
 	long				nbr_limit_meal;
 	long				start_sim;
 	bool				end_sim;
+	t_fork				*forks;
+	t_philo				*philos;
 }						t_table;
+
+/* Utils */
+
+int						valid_input(long number);
+int						ft_ispace(char c);
+long					ft_atol(const char *str);
+
+int	parse_input(t_table *table, char **av);
 
 #endif
