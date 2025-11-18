@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:44:38 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:44:46 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-long get_time(void)
+long	get_time(void)
 {
-    struct timeval	tv;
+	struct timeval	tv;
 
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 void	ft_putstrfd(char *str, int fd)
@@ -20,11 +32,11 @@ void	ft_putstrfd(char *str, int fd)
 	}
 }
 
-static int ft_ispace(char c)
+static int	ft_ispace(char c)
 {
-    if ((c >= 9 && c <= 13) || c == 32)
-        return (1);
-    return (0);
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }
 
 static int	valid_input(long number)
@@ -36,11 +48,11 @@ static int	valid_input(long number)
 	return (0);
 }
 
-long ft_atol(const char *str)
+long	ft_atol(const char *str)
 {
-	int	i;
+	int		i;
 	long	res;
-	int minus;
+	int		minus;
 
 	i = 0;
 	res = 0;

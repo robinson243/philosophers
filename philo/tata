@@ -1,0 +1,340 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:43:05 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 16:14:44 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+int	main(int argc, char **argv)
+{
+	t_args	args;
+
+	if (parse_args(argc, argv, &args) == 1)
+		return (1);
+	
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitors.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:45:18 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 16:13:17 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+void	*monitor_philosophers(void *arg)
+{
+	t_args *args;
+	int i;
+
+	i = 0;
+	args = (t_args *)arg;
+	while (1)
+	{
+		while (i < args->philo_count)
+		{
+			pthread_mutex_lock(&args->print_mutex);
+			if (get_time() - args->philos[i].last_meal > args->time_to_die)
+			{
+				printf("%ld philosopher [%d] died\n", get_time() - args->start_time, args->philos[i].id);
+				args->finished = 1;
+				pthread_mutex_unlock(&args->print_mutex);
+				return (NULL);
+			}
+			pthread_mutex_unlock(&args->print_mutex);
+			i++;
+		}
+		i = 0;
+		usleep(1000);
+	}
+}/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mutex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:43:24 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:43:35 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+void	destroy_all_mutexes(pthread_mutex_t *tab, int i)
+{
+	while (i > 0)
+	{
+		i--;
+		pthread_mutex_destroy(&tab[i]);
+	}
+	free(tab);
+}
+
+int	init_mutexes(t_args *args)
+{
+	pthread_mutex_t	*forks;
+	int				i;
+
+	i = 0;
+	forks = malloc(sizeof(pthread_mutex_t) * args->philo_count);
+	if (!forks)
+		return (1);
+	while (i < args->philo_count)
+	{
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
+			return (destroy_all_mutexes(forks, i), 1);
+		i++;
+	}
+	if (pthread_mutex_init(&args->print_mutex, NULL) != 0)
+		return (destroy_all_mutexes(forks, i), 1);
+	args->forks = forks;
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:42:47 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:42:48 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+int	parse_args(int argc, char **argv, t_args *args)
+{
+	if (argc < 5 || argc > 6)
+	{
+		ft_putstrfd("Usage: ./philo nb_philo time_die\n", 2);
+		ft_putstrfd(" time_eat time_sleep [nb_meals]\n", 2);
+		return (1);
+	}
+	args->philo_count = ft_atol(argv[1]);
+	args->time_to_die = ft_atol(argv[2]);
+	args->time_to_eat = ft_atol(argv[3]);
+	args->time_to_sleep = ft_atol(argv[4]);
+	if (argc == 6)
+		args->must_eat = ft_atol(argv[5]);
+	else
+		args->must_eat = -1;
+	if (args->philo_count == -1 || args->time_to_die == -1
+		|| args->time_to_eat == -1 || args->time_to_sleep == -1 || (argc == 6
+			&& args->must_eat == -1))
+		return (ft_putstrfd("Error: Invalid arguments\n", 2), 1);
+	if (args->philo_count == 0)
+		return (ft_putstrfd("Error: Need at least 1 philosopher\n", 2), 1);
+	args->finished = 0;
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:44:02 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 16:14:19 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+void	philo_take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->left_fork);
+	pthread_mutex_lock(&philo->args->print_mutex);
+	printf("%ld philosopher [%d] has taken a fork\n", get_time()
+		- philo->args->start_time, philo->id);
+	pthread_mutex_unlock(&philo->args->print_mutex);
+	pthread_mutex_lock(&philo->right_fork);
+	pthread_mutex_lock(&philo->args->print_mutex);
+	printf("%ld philosopher [%d] has taken a fork\n", get_time()
+		- philo->args->start_time, philo->id);
+	pthread_mutex_unlock(&philo->args->print_mutex);
+}
+
+void	philo_eat(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->args->print_mutex);
+	printf("%ld philosopher [%d] is eating\n", get_time()
+		- philo->args->start_time, philo->id);
+	pthread_mutex_unlock(&philo->args->print_mutex);
+	philo->last_meal = get_time();
+	philo->eat_count += 1;
+	ft_usleep(philo->args->time_to_eat);
+	pthread_mutex_unlock(&philo->left_fork);
+	pthread_mutex_unlock(&philo->right_fork);
+}
+
+void	philo_sleep(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->args->print_mutex);
+	printf("%ld philosopher [%d] is sleeping\n", get_time()
+		- philo->args->start_time, philo->id);
+	pthread_mutex_unlock(&philo->args->print_mutex);
+	ft_usleep(philo->args->time_to_sleep);
+}
+
+void	philo_think(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->args->print_mutex);
+	printf("%ld philosopher [%d] is thinking\n", get_time()
+		- philo->args->start_time, philo->id);
+	pthread_mutex_unlock(&philo->args->print_mutex);
+}
+
+void	*philo_life(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (1)
+	{
+		if (philo->args->finished == 1)
+			break ;
+		philo_think(philo);
+		philo_take_forks(philo);
+		philo_eat(philo);
+		philo_sleep(philo);
+	}
+	return (NULL);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:45:02 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+int	init_philosophers(t_args *args, t_philo **philos)
+{
+	int	i;
+
+	i = 0;
+	*philos = malloc(sizeof(t_philo) * args->philo_count);
+	if (!*philos)
+		return (1);
+	while (i < args->philo_count)
+	{
+		(*philos)[i].id = i;
+		(*philos)[i].eat_count = 0;
+		(*philos)[i].last_meal = get_time();
+		(*philos)[i].finished = 0;
+		(*philos)[i].left_fork = &args->forks[i];
+		(*philos)[i].right_fork = &args->forks[(i + 1) % args->philo_count];
+		i++;
+	}
+	return (0);
+}
+
+void	ft_usleep(long time)
+{
+	long	actual;
+
+	actual = get_time();
+	while ((get_time() - actual) < time)
+	{
+		usleep(100);
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:44:38 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:44:46 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+long	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_putstrfd(char *str, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(fd, &str[i], 1);
+		i++;
+	}
+}
+
+static int	ft_ispace(char c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
+static int	valid_input(long number)
+{
+	if (number < 0)
+		return (-1);
+	if (number > INT_MAX)
+		return (-1);
+	return (0);
+}
+
+long	ft_atol(const char *str)
+{
+	int		i;
+	long	res;
+	int		minus;
+
+	i = 0;
+	res = 0;
+	minus = 1;
+	while (ft_ispace(str[i]))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			minus *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+		res = res * 10 + (str[i++] - '0');
+	if (str[i] != '\0')
+		return (-1);
+	res *= minus;
+	if (valid_input(res) == -1)
+		return (-1);
+	return (res);
+}

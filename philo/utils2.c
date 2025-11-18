@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
+/*   Updated: 2025/11/18 15:45:02 by romukena         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	init_philosophers(t_args *args, t_philo **philos)
@@ -21,14 +33,13 @@ int	init_philosophers(t_args *args, t_philo **philos)
 	return (0);
 }
 
-void ft_usleep(long time)
+void	ft_usleep(long time)
 {
-	long actual;
-	
+	long	actual;
+
 	actual = get_time();
 	while ((get_time() - actual) < time)
 	{
 		usleep(100);
 	}
 }
-
