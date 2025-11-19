@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/18 15:45:02 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/19 03:10:01 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	init_philosophers(t_args *args, t_philo **philos)
 		(*philos)[i].eat_count = 0;
 		(*philos)[i].last_meal = get_time();
 		(*philos)[i].finished = 0;
+		(*philos)[i].args = args; // <-- AJOUTE CETTE LIGNE !!!
 		(*philos)[i].left_fork = &args->forks[i];
 		(*philos)[i].right_fork = &args->forks[(i + 1) % args->philo_count];
 		i++;

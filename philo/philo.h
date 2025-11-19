@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/18 16:22:39 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/19 03:02:59 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,53 +20,55 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+typedef struct s_philo	t_philo;
+
 typedef struct s_args
 {
-	int				philo_count;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat;
-	int				finished;
-	long			start_time;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	*forks;
-	t_philo			*philos;
-}					t_args;
+	int					philo_count;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					must_eat;
+	int					finished;
+	long				start_time;
+	pthread_mutex_t		print_mutex;
+	pthread_mutex_t		*forks;
+	t_philo				*philos;
+}						t_args;
 
 typedef struct s_philo
 {
-	int				id;
-	int				eat_count;
-	long			last_meal;
-	pthread_t		thread_id;
-	t_args			*args;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	int				finished;
-}					t_philo;
+	int					id;
+	int					eat_count;
+	long				last_meal;
+	pthread_t			thread_id;
+	t_args				*args;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	int					finished;
+}						t_philo;
 
 // utils
-long				get_time(void);
-void				ft_usleep(long time);
-void				ft_putstrfd(char *str, int fd);
-long				ft_atol(const char *str);
+long					get_time(void);
+void					ft_usleep(long time);
+void					ft_putstrfd(char *str, int fd);
+long					ft_atol(const char *str);
 
-int					parse_args(int argc, char **argv, t_args *args);
+int						parse_args(int argc, char **argv, t_args *args);
 
-void				*monitor_philosophers(void *arg);
+void					*monitor_philosophers(void *arg);
 // life
-void				*philo_life(void *philo_void);
+void					*philo_life(void *philo_void);
 
 // init & clean
-int					init_simulation(int argc, char **argv, t_args *args,
-						t_philo **philos);
-void				clean_simulation(t_args *args, t_philo *philos);
+void					clean_simulation(t_args *args, t_philo *philos);
 
 // error
-int					error(char *msg);
 
-void				destroy_all_mutexes(pthread_mutex_t *tab, int i);
-int					init_mutexes(t_args *args);
+void					destroy_all_mutexes(pthread_mutex_t *tab, int i);
+int						init_mutexes(t_args *args);
+
+int						init_philosophers(t_args *args, t_philo **philos);
+void					clean_simulation(t_args *args, t_philo *philos);
 
 #endif

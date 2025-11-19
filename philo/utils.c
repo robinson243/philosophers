@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:38 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/18 15:44:46 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/19 03:07:39 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ long	get_time(void)
 
 void	ft_putstrfd(char *str, int fd)
 {
-	int	i;
+	int		i;
+	ssize_t	ret;
 
 	i = 0;
 	while (str[i])
-	{
-		write(fd, &str[i], 1);
 		i++;
-	}
+	ret = write(fd, str, i);
+	(void)ret;
 }
 
 static int	ft_ispace(char c)
