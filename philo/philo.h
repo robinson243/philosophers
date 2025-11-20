@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/19 03:02:59 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/20 01:53:25 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_philo
 
 // utils
 long					get_time(void);
-void					ft_usleep(long time);
+void					ft_usleep(long time, t_philo *philo);
 void					ft_putstrfd(char *str, int fd);
 long					ft_atol(const char *str);
 
