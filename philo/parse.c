@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:42:47 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/18 15:42:48 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/20 11:59:46 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	parse_args(int argc, char **argv, t_args *args)
 {
 	if (argc < 5 || argc > 6)
 	{
-		ft_putstrfd("Usage: ./philo nb_philo time_die\n", 2);
+		ft_putstrfd("Usage: ./philo nb_philo time_die", 2);
 		ft_putstrfd(" time_eat time_sleep [nb_meals]\n", 2);
 		return (1);
 	}

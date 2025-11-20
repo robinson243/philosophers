@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/20 01:51:28 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/20 14:30:33 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_philosophers(t_args *args, t_philo **philos)
 		return (1);
 	while (i < args->philo_count)
 	{
-		(*philos)[i].id = i;
+		(*philos)[i].id = i + 1;
 		(*philos)[i].eat_count = 0;
 		(*philos)[i].last_meal = get_time();
 		(*philos)[i].finished = 0;
@@ -34,9 +34,9 @@ int	init_philosophers(t_args *args, t_philo **philos)
 	return (0);
 }
 
-void	ft_usleep(long time, t_philo *philo) 
+void	ft_usleep(long time, t_philo *philo)
 {
-	long actual;
+	long	actual;
 
 	actual = get_time();
 	while ((get_time() - actual) < time)
