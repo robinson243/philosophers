@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/20 14:30:33 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/23 20:23:37 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,32 @@ int	init_philosophers(t_args *args, t_philo **philos)
 void	ft_usleep(long time, t_philo *philo)
 {
 	long	actual;
+	int		is_finished;
 
 	actual = get_time();
 	while ((get_time() - actual) < time)
 	{
-		if (philo->args->finished == 1)
+		pthread_mutex_lock(&philo->args->print_mutex);
+		is_finished = philo->args->finished;
+		pthread_mutex_unlock(&philo->args->print_mutex);
+		if (is_finished == 1)
 			break ;
 		usleep(100);
 	}
+}
+
+void	lock_forks_in_order(t_philo *philo, pthread_mutex_t **first,
+		pthread_mutex_t **second)
+{
+	if (philo->left_fork < philo->right_fork)
+	{
+		*first = philo->left_fork;
+		*second = philo->right_fork;
+	}
+	else
+	{
+		*first = philo->right_fork;
+		*second = philo->left_fork;
+	}
+	pthread_mutex_lock(*first);
 }
