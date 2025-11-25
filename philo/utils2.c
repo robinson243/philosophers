@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/25 12:03:09 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/25 21:15:00 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_usleep(long time, t_philo *philo)
 void	lock_forks_in_order(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
-	if (philo->id == philo->args->philo_count)
+	if (philo->left_fork < philo->right_fork)
 	{
 		*first = philo->right_fork;
 		*second = philo->left_fork;
@@ -66,4 +66,3 @@ void	lock_forks_in_order(t_philo *philo, pthread_mutex_t **first,
 	}
 	pthread_mutex_lock(*first);
 }
-
