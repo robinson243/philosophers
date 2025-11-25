@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:02 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/23 20:29:30 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/25 02:56:13 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	philo_take_forks(t_philo *philo)
 		return (ft_usleep(philo->args->time_to_die + 1, philo),
 			pthread_mutex_unlock(first), (void)0);
 	pthread_mutex_lock(second);
+	philo->left_fork = first;
+	philo->right_fork = second;
 	pthread_mutex_lock(&philo->args->print_mutex);
 	if (!philo->args->finished)
 		printf("%ld philosopher [%d] has taken a fork\n", get_time()
@@ -73,6 +75,7 @@ void	*philo_life(void *arg)
 	int		is_finished;
 
 	philo = (t_philo *)arg;
+	philo->last_meal = get_time();
 	pthread_mutex_lock(&philo->args->print_mutex);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->args->print_mutex);

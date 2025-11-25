@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:45:18 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/21 16:27:00 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/25 02:42:55 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,24 @@ void	clean_simulation(t_args *args, t_philo *philos)
 int	check_death_and_count(t_args *args, int *full)
 {
 	long	last;
+	long	current_time;
 	int		i;
 
 	i = 0;
+	current_time = get_time();
 	while (i < args->philo_count)
 	{
 		pthread_mutex_lock(&args->print_mutex);
-		last = args->philos[i].last_meal;
-		if (!args->finished && get_time() - last > args->time_to_die)
+		if (args->finished)
 		{
-			printf("%ld philosopher [%d] died\n", get_time() - args->start_time,
-				args->philos[i].id);
+			pthread_mutex_unlock(&args->print_mutex);
+			return (1);
+		}
+		last = args->philos[i].last_meal;
+		if (last > 0 && current_time - last > args->time_to_die)
+		{
+			printf("%ld philosopher [%d] died\n", current_time
+				- args->start_time, args->philos[i].id);
 			args->finished = 1;
 			pthread_mutex_unlock(&args->print_mutex);
 			return (1);
@@ -71,6 +78,6 @@ void	*monitor_philosophers(void *arg)
 			pthread_mutex_unlock(&args->print_mutex);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(2000);
 	}
 }
