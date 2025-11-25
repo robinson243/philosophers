@@ -480,7 +480,7 @@ long	ft_atol(const char *str)
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/25 02:54:48 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/25 12:03:09 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,15 +528,16 @@ void	ft_usleep(long time, t_philo *philo)
 void	lock_forks_in_order(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
-	if (philo->left_fork < philo->right_fork)
-	{
-		*first = philo->left_fork;
-		*second = philo->right_fork;
-	}
-	else
+	if (philo->id == philo->args->philo_count)
 	{
 		*first = philo->right_fork;
 		*second = philo->left_fork;
 	}
+	else
+	{
+		*first = philo->left_fork;
+		*second = philo->right_fork;
+	}
 	pthread_mutex_lock(*first);
 }
+
