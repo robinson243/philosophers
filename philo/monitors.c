@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:45:18 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/25 02:42:55 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/27 11:50:29 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,14 @@ int	check_death_and_count(t_args *args, int *full)
 	{
 		pthread_mutex_lock(&args->print_mutex);
 		if (args->finished)
-		{
-			pthread_mutex_unlock(&args->print_mutex);
-			return (1);
-		}
+			return (pthread_mutex_unlock(&args->print_mutex), 1);
 		last = args->philos[i].last_meal;
 		if (last > 0 && current_time - last > args->time_to_die)
 		{
 			printf("%ld philosopher [%d] died\n", current_time
 				- args->start_time, args->philos[i].id);
 			args->finished = 1;
-			pthread_mutex_unlock(&args->print_mutex);
-			return (1);
+			return (pthread_mutex_unlock(&args->print_mutex), 1);
 		}
 		if (args->must_eat > 0 && args->philos[i].eat_count < args->must_eat)
 			*full = 0;
