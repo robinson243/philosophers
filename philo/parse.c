@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:42:47 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/25 21:11:05 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/28 12:12:43 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	validate_limits(t_args *args, int argc)
 		return (ft_putstrfd("Error: time_to_eat must be 60-5000ms\n", 2), 1);
 	if (args->time_to_sleep < 60 || args->time_to_sleep > 5000)
 		return (ft_putstrfd("Error: time_to_sleep must be 60-5000ms\n", 2), 1);
-	if (argc == 6 && (args->must_eat < 0 || args->must_eat > 10000))
+	if (argc == 6 && (args->must_eat < 1 || args->must_eat > 10000))
 		return (ft_putstrfd("Error: must_eat must be 0-10000\n", 2), 1);
 	return (0);
 }

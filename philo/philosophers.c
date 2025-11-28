@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:02 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/25 02:56:13 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/28 13:18:54 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,20 @@ void	philo_sleep(t_philo *philo)
 
 void	philo_think(t_philo *philo)
 {
+	long	think_time;
+
 	pthread_mutex_lock(&philo->args->print_mutex);
 	if (!philo->args->finished)
 		printf("%ld philosopher [%d] is thinking\n", get_time()
 			- philo->args->start_time, philo->id);
 	pthread_mutex_unlock(&philo->args->print_mutex);
+	if (philo->args->philo_count % 2 != 0)
+	{
+		think_time = (philo->args->time_to_eat * 2)
+			- philo->args->time_to_sleep;
+		if (think_time > 0 && think_time < philo->args->time_to_die)
+			ft_usleep(think_time, philo);
+	}
 }
 
 void	*philo_life(void *arg)
@@ -82,7 +91,7 @@ void	*philo_life(void *arg)
 	if (philo->args->philo_count == 1)
 		return (philo_think(philo), philo_take_forks(philo), NULL);
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		ft_usleep(philo->args->time_to_eat, philo);
 	pthread_mutex_lock(&philo->args->print_mutex);
 	is_finished = philo->args->finished;
 	pthread_mutex_unlock(&philo->args->print_mutex);
