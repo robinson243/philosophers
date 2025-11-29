@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/28 12:54:24 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/29 14:22:13 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,57 @@ void	ft_usleep(long time, t_philo *philo)
 	}
 }
 
-void	lock_forks_in_order(t_philo *philo, pthread_mutex_t **first,
+int	init_philo_life(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->args->print_mutex);
+	philo->last_meal = get_time();
+	pthread_mutex_unlock(&philo->args->print_mutex);
+	if (philo->args->philo_count == 1)
+	{
+		pthread_mutex_lock(&philo->args->print_mutex);
+		printf("%ld philosopher [%d] has taken a fork\n", get_time()
+			- philo->args->start_time, philo->id);
+		pthread_mutex_unlock(&philo->args->print_mutex);
+		ft_usleep(philo->args->time_to_die + 1, philo);
+		return (1);
+	}
+	return (0);
+}
+
+void	stagger_start(t_philo *philo)
+{
+	if (philo->args->philo_count % 2 == 1)
+	{
+		if (philo->id % 2 == 0)
+			usleep(0);
+		else if (philo->id == philo->args->philo_count)
+			usleep((philo->args->time_to_eat / 2) * 1000);
+		else
+			usleep(100);
+	}
+	else
+	{
+		if (philo->id % 2 == 0)
+			usleep(1000);
+	}
+}
+
+void	determine_fork_order(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
 {
-	if (philo->left_fork < philo->right_fork)
+	if (philo->id == philo->args->philo_count)
 	{
 		*first = philo->right_fork;
 		*second = philo->left_fork;
 	}
-	else
+	else if (philo->id % 2 == 1)
 	{
 		*first = philo->left_fork;
 		*second = philo->right_fork;
 	}
-	pthread_mutex_lock(*first);
+	else
+	{
+		*first = philo->right_fork;
+		*second = philo->left_fork;
+	}
 }

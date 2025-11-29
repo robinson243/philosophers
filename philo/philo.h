@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 11:41:03 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/23 20:24:13 by romukena         ###   ########.fr       */
+/*   Updated: 2025/11/29 14:23:06 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void					*philo_life(void *philo_void);
 
 void					clean_simulation(t_args *args, t_philo *philos);
 
-void					lock_forks_in_order(t_philo *philo,
+int						init_philo_life(t_philo *philo);
+void					stagger_start(t_philo *philo);
+void					determine_fork_order(t_philo *philo,
 							pthread_mutex_t **first, pthread_mutex_t **second);
-
 void					destroy_all_mutexes(pthread_mutex_t *tab, int i);
 int						init_mutexes(t_args *args);
 
