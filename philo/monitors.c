@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:45:18 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/27 11:50:29 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/03 14:46:41 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ void	*monitor_philosophers(void *arg)
 			pthread_mutex_unlock(&args->print_mutex);
 			return (NULL);
 		}
-		usleep(2000);
+		usleep(500);
 	}
 }

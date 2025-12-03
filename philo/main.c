@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:43:05 by romukena          #+#    #+#             */
-/*   Updated: 2025/11/27 17:42:53 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/03 14:46:25 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	create_philo_threads(t_args *args, t_philo *philos,
 			cleanup_threads(threads, i, args);
 			return (1);
 		}
-		usleep(100);
 		i++;
 	}
 	return (0);
@@ -83,7 +82,6 @@ int	launch_simulation(t_args *args, t_philo *philos, pthread_t *threads)
 	args->start_time = get_time();
 	if (create_philo_threads(args, philos, threads) == 1)
 		return (1);
-	usleep(5000);
 	ret = pthread_create(&monitor_thread, NULL, monitor_philosophers,
 			(void *)args);
 	if (ret != 0)
