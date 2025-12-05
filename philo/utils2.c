@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/12/03 14:45:44 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/05 03:29:58 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	init_philosophers(t_args *args, t_philo **philos)
 	return (0);
 }
 
-void ft_usleep(long time, t_philo *philo)
+void	ft_usleep(long time, t_philo *philo)
 {
-	long actual;
-	int is_finished;
+	long	actual;
+	int		is_finished;
 
 	actual = get_time();
 	while ((get_time() - actual) < time)
@@ -68,12 +68,21 @@ int	init_philo_life(t_philo *philo)
 	return (0);
 }
 
-void stagger_start(t_philo *philo)
+void	stagger_start(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-		usleep(100);
+	if (philo->args->philo_count % 2 == 1)
+	{
+		if (philo->id % 2 == 0)
+			ft_usleep(philo->args->time_to_eat, philo);
+		else if (philo->id % 3 == 0)
+			ft_usleep(philo->args->time_to_eat * 2, philo);
+	}
+	else
+	{
+		if (philo->id % 2 == 0)
+			ft_usleep(philo->args->time_to_eat / 2, philo);
+	}
 }
-
 
 void	determine_fork_order(t_philo *philo, pthread_mutex_t **first,
 		pthread_mutex_t **second)
