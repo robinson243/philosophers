@@ -1,0 +1,322 @@
+0 philosopher [1] is thinking
+0 philosopher [3] is thinking
+0 philosopher [5] is thinking
+0 philosopher [2] is thinking
+0 philosopher [7] is thinking
+0 philosopher [4] is thinking
+0 philosopher [9] is thinking
+0 philosopher [6] is thinking
+0 philosopher [11] is thinking
+0 philosopher [8] is thinking
+0 philosopher [13] is thinking
+0 philosopher [10] is thinking
+1 philosopher [15] is thinking
+1 philosopher [12] is thinking
+1 philosopher [14] is thinking
+1 philosopher [17] is thinking
+1 philosopher [19] is thinking
+1 philosopher [16] is thinking
+1 philosopher [21] is thinking
+1 philosopher [18] is thinking
+1 philosopher [23] is thinking
+1 philosopher [20] is thinking
+1 philosopher [25] is thinking
+1 philosopher [22] is thinking
+1 philosopher [27] is thinking
+1 philosopher [24] is thinking
+1 philosopher [29] is thinking
+1 philosopher [31] is thinking
+1 philosopher [33] is thinking
+1 philosopher [26] is thinking
+1 philosopher [28] is thinking
+1 philosopher [30] is thinking
+1 philosopher [35] is thinking
+1 philosopher [32] is thinking
+1 philosopher [37] is thinking
+1 philosopher [34] is thinking
+1 philosopher [39] is thinking
+2 philosopher [41] is thinking
+2 philosopher [36] is thinking
+2 philosopher [38] is thinking
+2 philosopher [43] is thinking
+2 philosopher [42] is thinking
+2 philosopher [45] is thinking
+2 philosopher [40] is thinking
+2 philosopher [44] is thinking
+2 philosopher [47] is thinking
+2 philosopher [49] is thinking
+2 philosopher [51] is thinking
+2 philosopher [46] is thinking
+2 philosopher [48] is thinking
+2 philosopher [50] is thinking
+2 philosopher [53] is thinking
+2 philosopher [55] is thinking
+2 philosopher [52] is thinking
+2 philosopher [54] is thinking
+200 philosopher [1] has taken a fork
+200 philosopher [1] has taken a fork
+200 philosopher [3] has taken a fork
+200 philosopher [3] has taken a fork
+200 philosopher [3] is eating
+200 philosopher [1] is eating
+200 philosopher [5] has taken a fork
+200 philosopher [5] has taken a fork
+200 philosopher [5] is eating
+200 philosopher [7] has taken a fork
+200 philosopher [7] has taken a fork
+200 philosopher [7] is eating
+200 philosopher [9] has taken a fork
+200 philosopher [9] has taken a fork
+200 philosopher [9] is eating
+200 philosopher [11] has taken a fork
+200 philosopher [11] has taken a fork
+200 philosopher [11] is eating
+201 philosopher [13] has taken a fork
+201 philosopher [13] has taken a fork
+201 philosopher [13] is eating
+201 philosopher [15] has taken a fork
+201 philosopher [15] has taken a fork
+201 philosopher [15] is eating
+201 philosopher [17] has taken a fork
+201 philosopher [17] has taken a fork
+201 philosopher [17] is eating
+201 philosopher [19] has taken a fork
+201 philosopher [19] has taken a fork
+201 philosopher [19] is eating
+201 philosopher [21] has taken a fork
+201 philosopher [21] has taken a fork
+201 philosopher [21] is eating
+201 philosopher [23] has taken a fork
+201 philosopher [23] has taken a fork
+201 philosopher [23] is eating
+201 philosopher [25] has taken a fork
+201 philosopher [25] has taken a fork
+201 philosopher [25] is eating
+201 philosopher [27] has taken a fork
+201 philosopher [27] has taken a fork
+201 philosopher [27] is eating
+201 philosopher [29] has taken a fork
+201 philosopher [29] has taken a fork
+201 philosopher [29] is eating
+201 philosopher [31] has taken a fork
+201 philosopher [31] has taken a fork
+201 philosopher [31] is eating
+201 philosopher [33] has taken a fork
+201 philosopher [33] has taken a fork
+201 philosopher [33] is eating
+201 philosopher [37] has taken a fork
+201 philosopher [37] has taken a fork
+201 philosopher [37] is eating
+201 philosopher [35] has taken a fork
+201 philosopher [35] has taken a fork
+201 philosopher [35] is eating
+202 philosopher [39] has taken a fork
+202 philosopher [39] has taken a fork
+202 philosopher [39] is eating
+202 philosopher [41] has taken a fork
+202 philosopher [41] has taken a fork
+202 philosopher [41] is eating
+202 philosopher [43] has taken a fork
+202 philosopher [43] has taken a fork
+202 philosopher [43] is eating
+202 philosopher [45] has taken a fork
+202 philosopher [45] has taken a fork
+202 philosopher [45] is eating
+202 philosopher [49] has taken a fork
+202 philosopher [49] has taken a fork
+202 philosopher [47] has taken a fork
+202 philosopher [47] has taken a fork
+202 philosopher [49] is eating
+202 philosopher [47] is eating
+202 philosopher [51] has taken a fork
+202 philosopher [51] has taken a fork
+202 philosopher [51] is eating
+202 philosopher [53] has taken a fork
+202 philosopher [53] has taken a fork
+202 philosopher [53] is eating
+400 philosopher [3] is sleeping
+400 philosopher [7] is sleeping
+400 philosopher [5] is sleeping
+400 philosopher [6] has taken a fork
+400 philosopher [6] has taken a fork
+400 philosopher [1] is sleeping
+400 philosopher [6] is eating
+400 philosopher [4] has taken a fork
+400 philosopher [4] has taken a fork
+400 philosopher [4] is eating
+400 philosopher [8] has taken a fork
+400 philosopher [8] has taken a fork
+400 philosopher [8] is eating
+400 philosopher [11] is sleeping
+400 philosopher [2] has taken a fork
+400 philosopher [2] has taken a fork
+400 philosopher [2] is eating
+400 philosopher [9] is sleeping
+400 philosopher [10] has taken a fork
+400 philosopher [10] has taken a fork
+400 philosopher [10] is eating
+401 philosopher [33] is sleeping
+401 philosopher [27] is sleeping
+401 philosopher [13] is sleeping
+401 philosopher [29] is sleeping
+401 philosopher [35] is sleeping
+401 philosopher [12] has taken a fork
+401 philosopher [12] has taken a fork
+401 philosopher [12] is eating
+401 philosopher [21] is sleeping
+401 philosopher [34] has taken a fork
+401 philosopher [34] has taken a fork
+401 philosopher [34] is eating
+401 philosopher [37] is sleeping
+401 philosopher [26] has taken a fork
+401 philosopher [26] has taken a fork
+401 philosopher [28] has taken a fork
+401 philosopher [28] has taken a fork
+401 philosopher [26] is eating
+401 philosopher [28] is eating
+401 philosopher [25] is sleeping
+401 philosopher [36] has taken a fork
+401 philosopher [36] has taken a fork
+401 philosopher [36] is eating
+401 philosopher [17] is sleeping
+401 philosopher [23] is sleeping
+401 philosopher [24] has taken a fork
+401 philosopher [24] has taken a fork
+401 philosopher [24] is eating
+401 philosopher [22] has taken a fork
+401 philosopher [22] has taken a fork
+401 philosopher [22] is eating
+401 philosopher [14] has taken a fork
+401 philosopher [14] has taken a fork
+401 philosopher [14] is eating
+401 philosopher [19] is sleeping
+401 philosopher [20] has taken a fork
+401 philosopher [20] has taken a fork
+401 philosopher [20] is eating
+401 philosopher [16] has taken a fork
+401 philosopher [16] has taken a fork
+401 philosopher [16] is eating
+401 philosopher [18] has taken a fork
+401 philosopher [18] has taken a fork
+401 philosopher [18] is eating
+401 philosopher [15] is sleeping
+401 philosopher [30] has taken a fork
+401 philosopher [30] has taken a fork
+401 philosopher [30] is eating
+401 philosopher [31] is sleeping
+401 philosopher [32] has taken a fork
+401 philosopher [32] has taken a fork
+401 philosopher [32] is eating
+402 philosopher [43] is sleeping
+402 philosopher [49] is sleeping
+402 philosopher [51] is sleeping
+402 philosopher [45] is sleeping
+402 philosopher [52] has taken a fork
+402 philosopher [52] has taken a fork
+402 philosopher [52] is eating
+402 philosopher [41] is sleeping
+402 philosopher [47] is sleeping
+402 philosopher [53] is sleeping
+402 philosopher [50] has taken a fork
+402 philosopher [50] has taken a fork
+402 philosopher [48] has taken a fork
+402 philosopher [48] has taken a fork
+402 philosopher [48] is eating
+402 philosopher [44] has taken a fork
+402 philosopher [44] has taken a fork
+402 philosopher [44] is eating
+402 philosopher [42] has taken a fork
+402 philosopher [42] has taken a fork
+402 philosopher [42] is eating
+402 philosopher [46] has taken a fork
+402 philosopher [46] has taken a fork
+402 philosopher [50] is eating
+402 philosopher [39] is sleeping
+402 philosopher [46] is eating
+402 philosopher [54] has taken a fork
+402 philosopher [54] has taken a fork
+402 philosopher [38] has taken a fork
+402 philosopher [38] has taken a fork
+402 philosopher [54] is eating
+402 philosopher [38] is eating
+402 philosopher [40] has taken a fork
+402 philosopher [40] has taken a fork
+402 philosopher [40] is eating
+600 philosopher [5] is thinking
+600 philosopher [6] is sleeping
+600 philosopher [4] is sleeping
+600 philosopher [1] is thinking
+600 philosopher [10] is sleeping
+600 philosopher [8] is sleeping
+600 philosopher [3] is thinking
+600 philosopher [9] is thinking
+600 philosopher [11] is thinking
+600 philosopher [2] is sleeping
+600 philosopher [7] is thinking
+601 philosopher [37] is thinking
+601 philosopher [12] is sleeping
+601 philosopher [31] is thinking
+601 philosopher [22] is sleeping
+601 philosopher [30] is sleeping
+601 philosopher [16] is sleeping
+601 philosopher [24] is sleeping
+601 philosopher [35] is thinking
+601 philosopher [14] is sleeping
+601 philosopher [21] is thinking
+601 philosopher [25] is thinking
+601 philosopher [18] is sleeping
+601 philosopher [26] is sleeping
+601 philosopher [23] is thinking
+601 philosopher [34] is sleeping
+601 philosopher [13] is thinking
+601 philosopher [27] is thinking
+601 philosopher [33] is thinking
+601 philosopher [17] is thinking
+601 philosopher [36] is sleeping
+601 philosopher [28] is sleeping
+601 philosopher [29] is thinking
+601 philosopher [19] is thinking
+601 philosopher [32] is sleeping
+601 philosopher [15] is thinking
+601 philosopher [20] is sleeping
+602 philosopher [39] is thinking
+602 philosopher [42] is sleeping
+602 philosopher [50] is sleeping
+602 philosopher [48] is sleeping
+602 philosopher [45] is thinking
+602 philosopher [49] is thinking
+602 philosopher [52] is sleeping
+602 philosopher [54] is sleeping
+602 philosopher [55] has taken a fork
+602 philosopher [55] has taken a fork
+602 philosopher [40] is sleeping
+602 philosopher [55] is eating
+602 philosopher [41] is thinking
+602 philosopher [53] is thinking
+602 philosopher [43] is thinking
+602 philosopher [38] is sleeping
+602 philosopher [51] is thinking
+602 philosopher [47] is thinking
+602 philosopher [44] is sleeping
+602 philosopher [46] is sleeping
+800 philosopher [2] is thinking
+800 philosopher [6] is thinking
+800 philosopher [5] has taken a fork
+800 philosopher [5] has taken a fork
+800 philosopher [4] is thinking
+800 philosopher [5] is eating
+800 philosopher [10] is thinking
+800 philosopher [3] has taken a fork
+800 philosopher [3] has taken a fork
+800 philosopher [3] is eating
+800 philosopher [8] is thinking
+800 philosopher [11] has taken a fork
+800 philosopher [11] has taken a fork
+800 philosopher [11] is eating
+800 philosopher [9] has taken a fork
+800 philosopher [9] has taken a fork
+800 philosopher [9] is eating
+800 philosopher [7] has taken a fork
+800 philosopher [7] has taken a fork
+800 philosopher [7] is eating
+800 philosopher [1] died
