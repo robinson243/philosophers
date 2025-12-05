@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 01:37:07 by romukena          #+#    #+#             */
-/*   Updated: 2025/12/05 03:28:30 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:36:20 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ void	*philo_life(void *arg)
 	int		is_finished;
 
 	philo = (t_philo *)arg;
+	stagger_start(philo);
 	if (init_philo_life(philo))
 		return (NULL);
-	stagger_start(philo);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->args->print_mutex);

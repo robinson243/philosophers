@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/12/05 03:29:58 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:45:02 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_usleep(long time, t_philo *philo)
 int	init_philo_life(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->args->print_mutex);
-	philo->last_meal = get_time();
+	philo->last_meal = philo->args->start_time;
 	pthread_mutex_unlock(&philo->args->print_mutex);
 	if (philo->args->philo_count == 1)
 	{
@@ -72,15 +72,14 @@ void	stagger_start(t_philo *philo)
 {
 	if (philo->args->philo_count % 2 == 1)
 	{
-		if (philo->id % 2 == 0)
-			ft_usleep(philo->args->time_to_eat, philo);
-		else if (philo->id % 3 == 0)
-			ft_usleep(philo->args->time_to_eat * 2, philo);
+		if (philo->id % 2 == 1)
+			ft_usleep(philo->args->time_to_eat / 2, philo);
 	}
 	else
 	{
-		if (philo->id % 2 == 0)
-			ft_usleep(philo->args->time_to_eat / 2, philo);
+		// ✅ PAIRS : stagger LES 2 DERNIERS philosophes
+		if (philo->id >= philo->args->philo_count - 1)
+			usleep(200); // 0.2ms ultra-léger
 	}
 }
 
