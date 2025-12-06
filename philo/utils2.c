@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:44:56 by romukena          #+#    #+#             */
-/*   Updated: 2025/12/05 12:45:02 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/06 17:38:29 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ void	stagger_start(t_philo *philo)
 	}
 	else
 	{
-		// ✅ PAIRS : stagger LES 2 DERNIERS philosophes
-		if (philo->id >= philo->args->philo_count - 1)
-			usleep(200); // 0.2ms ultra-léger
+		if (philo->id % 2 == 0)
+			ft_usleep(philo->args->time_to_eat, philo);
 	}
 }
 

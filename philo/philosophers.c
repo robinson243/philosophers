@@ -6,7 +6,7 @@
 /*   By: romukena <romukena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 01:37:07 by romukena          #+#    #+#             */
-/*   Updated: 2025/12/05 12:36:20 by romukena         ###   ########.fr       */
+/*   Updated: 2025/12/06 17:56:28 by romukena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,25 @@ void	philo_take_forks(t_philo *philo)
 void	philo_think(t_philo *philo)
 {
 	long	think_time;
+	long	max_think;
 
 	pthread_mutex_lock(&philo->args->print_mutex);
 	if (!philo->args->finished)
 		printf("%ld philosopher [%d] is thinking\n", get_time()
 			- philo->args->start_time, philo->id);
 	pthread_mutex_unlock(&philo->args->print_mutex);
-	if (philo->args->philo_count % 2 == 1)
+	max_think = philo->args->time_to_die - philo->args->time_to_eat
+		- philo->args->time_to_sleep - 10;
+	if (max_think > 0)
 	{
 		think_time = (philo->args->time_to_eat * 2 - philo->args->time_to_sleep)
 			/ 2;
 		if (think_time < 0)
 			think_time = 0;
-		ft_usleep(think_time, philo);
+		if (think_time > max_think)
+			think_time = max_think;
+		if (think_time > 0)
+			ft_usleep(think_time, philo);
 	}
 }
 
